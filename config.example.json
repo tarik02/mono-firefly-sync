@@ -1,10 +1,10 @@
 {
-	"monobank": {
-		"token": "",
-		"webhookUrl": "https://mono.example.com"
-	},
-	"firefly": {
-		"apiUrl": "https://firefly.example.com/api",
-		"token": ""
-	}
+  "monobank": {
+    "token": "",
+    "webhookUrl": "https://mono.example.com"
+  },
+  "firefly": {
+    "apiUrl": "https://firefly.example.com/api",
+    "token": ""
+  }
 }
