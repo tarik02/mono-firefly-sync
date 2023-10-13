@@ -27,8 +27,8 @@ const config = z.object({
         token: z.string(),
     }),
 }).parse(
-    process.env.MONO_FIREFLY_SYNC_CONFIG ?? JSON.parse(
-        await fs.readFile('./config.json', 'utf-8')
+    JSON.parse(
+        process.env.MONO_FIREFLY_SYNC_CONFIG ?? await fs.readFile('./config.json', 'utf-8')
     )
 );
 
