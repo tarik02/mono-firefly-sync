@@ -264,13 +264,13 @@ async function recover() {
 
             const startingStatement = statements.find(
                 statement => (
-                    (statement.balance === fireflyAcccount.attributes.current_balance * 100) &&
-                    (firstJournal.type === 'withdrawal' && statement.amount === -firstJournal.amount * 100 && account.iban === firstJournal.source_iban) ||
-                    (firstJournal.type === 'deposit' && statement.amount === firstJournal.amount * 100 && account.iban === firstJournal.destination_iban)
+                    Math.round(statement.balance) === Math.round(fireflyAcccount.attributes.current_balance * 100) &&
+                    (
+                        (firstJournal.type === 'withdrawal' && Math.round(statement.amount) === Math.round(-firstJournal.amount * 100) && account.iban === firstJournal.source_iban) ||
+                        (firstJournal.type === 'deposit' && Math.round(statement.amount) === Math.round(firstJournal.amount * 100) && account.iban === firstJournal.destination_iban)
+                    )
                 )
             );
-
-            fastify.log.info({startingStatement, fireflyAcccount, firstJournal})
 
             if (startingStatement === undefined) {
                 continue;
@@ -308,6 +308,8 @@ async function recover() {
                 }
             }
 
+            fastify.log.info(`Recovered ${importedStatementIds.size - 1} transactions`);
+
             return;
         }
     }
@@ -321,11 +323,11 @@ async function setWebook(url: string) {
     });
 }
 
-fastify.get('*', async (request, reply) => {
+fastify.get('*', async () => {
     return '';
 });
 
-fastify.post('*', async (request, reply) => {
+fastify.post('*', async request => {
     const { data: { account: monoAccountId, statementItem } } = z.object({
         type: z.literal('StatementItem'),
         data: z.object({
